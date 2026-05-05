@@ -11,7 +11,6 @@
       padding: 0; 
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
       background: #f0f2f5; 
-      color: #1c1e21; 
       display: flex; 
       justify-content: center; 
       align-items: center; 
@@ -36,9 +35,8 @@
       background-clip: text; 
       -webkit-background-clip: text; 
       -webkit-text-fill-color: transparent; 
-      margin: 0 0 10px 0; 
+      margin-bottom: 30px;
     }
-    .header p { color: #65676b; font-weight: 500; margin-bottom: 30px; font-size: 14px; }
     
     .input-group {
       position: relative;
@@ -46,10 +44,8 @@
       text-align: left;
     }
 
-    /* Hiệu ứng ẩn/hiện mượt mà cho ô Nhập lại mật khẩu */
-    #re-password-group {
-      display: none;
-    }
+    /* Ẩn mặc định ô nhập lại */
+    #re-password-group { display: none; }
 
     .input-group label {
       display: block;
@@ -58,7 +54,6 @@
       margin-bottom: 8px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .input-group input {
@@ -68,7 +63,6 @@
       border-radius: 10px;
       font-size: 16px;
       box-sizing: border-box;
-      transition: all 0.3s ease;
       background: #f8f9fa;
     }
 
@@ -78,6 +72,7 @@
       background: #ffffff;
     }
 
+    /* Nút hiện mật khẩu */
     .toggle-password {
       position: absolute;
       right: 15px;
@@ -85,7 +80,6 @@
       cursor: pointer;
       color: #8b949e;
       font-size: 18px;
-      transition: color 0.3s ease;
     }
 
     .btn-action {
@@ -98,27 +92,12 @@
       font-weight: 700;
       border-radius: 10px;
       cursor: pointer;
-      transition: all 0.3s ease;
       text-transform: uppercase;
       margin-top: 10px;
     }
 
-    .btn-action:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(31, 111, 235, 0.3);
-    }
-
-    .footer-text {
-      margin-top: 25px;
-      font-size: 14px;
-      color: #65676b;
-    }
-
-    .footer-text a {
-      color: #0561da;
-      text-decoration: none;
-      font-weight: 700;
-    }
+    .footer-text { margin-top: 25px; font-size: 14px; color: #65676b; }
+    .footer-text a { color: #0561da; text-decoration: none; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -126,28 +105,26 @@
 <div class="container">
   <div class="header">
     <h1 id="form-title">Đăng Nhập</h1>
-    <p id="sub-title">Chào mừng bạn đến với hệ thống</p>
   </div>
 
   <div class="auth-form">
-    <!-- Tài khoản -->
     <div class="input-group">
       <label>Tên đăng nhập</label>
       <input type="text" id="username" placeholder="Tên của bạn...">
     </div>
 
-    <!-- Mật khẩu -->
+    <!-- Ô Mật khẩu 1 -->
     <div class="input-group">
       <label>Mật khẩu</label>
       <input type="password" id="password" placeholder="••••••••">
-      <i class="fa-solid fa-eye toggle-password" onclick="toggleView('password', this)"></i>
+      <i class="fa-solid fa-eye toggle-password" id="btn-pass1"></i>
     </div>
 
-    <!-- Nhập lại mật khẩu (Mặc định ẩn) -->
+    <!-- Ô Mật khẩu 2 (Chỉ hiện khi Đăng ký) -->
     <div class="input-group" id="re-password-group">
       <label>Nhập lại mật khẩu</label>
       <input type="password" id="re-password" placeholder="••••••••">
-      <i class="fa-solid fa-eye toggle-password" onclick="toggleView('re-password', this)"></i>
+      <i class="fa-solid fa-eye toggle-password" id="btn-pass2"></i>
     </div>
 
     <button class="btn-action" onclick="handleSubmit()" id="submitBtn">Đăng Nhập</button>
@@ -162,16 +139,23 @@
 <script>
   let isLogin = true;
 
-  // Chức năng hiện/ẩn mật khẩu cho từng ô
-  function toggleView(inputId, icon) {
+  // Hàm xử lý ẩn/hiện mật khẩu chung
+  function setupToggle(btnId, inputId) {
+    const btn = document.getElementById(btnId);
     const input = document.getElementById(inputId);
-    const isPassword = input.getAttribute('type') === 'password';
-    input.setAttribute('type', isPassword ? 'text' : 'password');
-    icon.classList.toggle('fa-eye');
-    icon.classList.toggle('fa-eye-slash');
+    
+    btn.addEventListener('click', () => {
+      const isPass = input.type === 'password';
+      input.type = isPass ? 'text' : 'password';
+      btn.classList.toggle('fa-eye');
+      btn.classList.toggle('fa-eye-slash');
+    });
   }
 
-  // Chuyển đổi chế độ Đăng nhập/Đăng ký
+  // Kích hoạt cho cả 2 nút mắt
+  setupToggle('btn-pass1', 'password');
+  setupToggle('btn-pass2', 're-password');
+
   function toggleMode() {
     isLogin = !isLogin;
     const title = document.getElementById('form-title');
@@ -206,7 +190,6 @@
     }
 
     if (!isLogin) {
-      // Kiểm tra mật khẩu khớp nhau khi đăng ký
       if (pass !== rePass) {
         alert("Mật khẩu nhập lại không khớp!");
         return;
@@ -214,7 +197,6 @@
       alert("Đăng ký thành công!");
       toggleMode();
     } else {
-      // Chuyển hướng sang trang kết quả
       window.location.href = "ketqua.html";
     }
   }
