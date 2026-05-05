@@ -2,183 +2,223 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Smart Parking - Đăng Nhập / Đăng Ký</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Nhập - Hệ Thống Bãi Đỗ Xe Thông Minh</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    /* Cấu hình nền sáng đồng bộ với trang kết quả */
     body { 
-      background-color: #f0f2f5; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f0f2f5; 
+      color: #1c1e21; 
       display: flex; 
       justify-content: center; 
       align-items: center; 
-      height: 100vh; 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      margin: 0; 
+      min-height: 100vh; 
     }
-
+    
     .container { 
+      width: 95%; 
+      max-width: 400px; 
       background: #ffffff; 
+      border-radius: 20px; 
       padding: 40px; 
-      border-radius: 15px; 
-      width: 350px; 
-      color: #1c1e21; 
-      text-align: center; 
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1); 
-      border: 1px solid #dddfe2;
-    }
-
-    h2 { 
-      margin-bottom: 25px; 
-      color: #0561da; 
-      font-size: 28px; 
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    input { 
-      width: 100%; 
-      padding: 12px; 
-      margin: 10px 0; 
-      border-radius: 8px; 
       border: 1px solid #dddfe2; 
-      background: #f8f9fa; 
-      color: #1c1e21; 
-      box-sizing: border-box; 
-      font-size: 14px;
-      transition: border-color 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    
+    .header h1 { 
+      font-size: 30px; 
+      text-transform: uppercase; 
+      background: linear-gradient(to right, #0561da, #1f6feb); 
+      background-clip: text; 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      margin: 0 0 10px 0; 
+    }
+    .header p { color: #65676b; font-weight: 500; margin-bottom: 30px; font-size: 14px; }
+    
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+      text-align: left;
     }
 
-    input:focus {
+    /* Hiệu ứng ẩn/hiện mượt mà cho ô Nhập lại mật khẩu */
+    #re-password-group {
+      display: none;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      color: #65676b;
+      margin-bottom: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e4e6eb;
+      border-radius: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    .input-group input:focus {
+      border-color: #1f6feb;
       outline: none;
-      border-color: #0561da;
       background: #ffffff;
     }
 
-    button { 
-      width: 100%; 
-      padding: 12px; 
-      background: #0561da; 
-      color: white; 
-      border: none; 
-      cursor: pointer; 
-      border-radius: 8px; 
-      font-weight: bold; 
-      margin-top: 15px; 
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 38px;
+      cursor: pointer;
+      color: #8b949e;
+      font-size: 18px;
+      transition: color 0.3s ease;
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(to right, #0561da, #1f6feb);
+      border: none;
+      color: white;
       font-size: 16px;
-      transition: background 0.3s;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      margin-top: 10px;
     }
 
-    button:hover { 
-      background: #1f6feb; 
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(31, 111, 235, 0.3);
     }
 
-    .switch { 
-      margin-top: 25px; 
-      font-size: 14px; 
+    .footer-text {
+      margin-top: 25px;
+      font-size: 14px;
       color: #65676b;
     }
 
-    a { 
-      color: #0561da; 
-      text-decoration: none; 
-      cursor: pointer; 
-      font-weight: 600;
-    }
-
-    a:hover {
-      text-decoration: underline;
+    .footer-text a {
+      color: #0561da;
+      text-decoration: none;
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h2 id="form-title">Đăng Nhập</h2>
-  
-  <input type="text" id="username" placeholder="Tên đăng nhập (Ví dụ: name123)">
-  <input type="password" id="password" placeholder="Mật khẩu">
-  
-  <!-- Ô xác nhận mật khẩu chỉ hiện khi Đăng ký -->
-  <input type="password" id="confirmPassword" placeholder="Xác nhận mật khẩu" style="display:none;">
-  
-  <button id="main-btn" onclick="handleAuth()">Đăng Nhập</button>
-  
-  <div class="switch">
-    <span id="switch-text">Chưa có tài khoản?</span> 
-    <a onclick="toggleMode()" id="switch-link">Tạo tài khoản mới</a>
+  <div class="header">
+    <h1 id="form-title">Đăng Nhập</h1>
+    <p id="sub-title">Chào mừng bạn đến với hệ thống</p>
+  </div>
+
+  <div class="auth-form">
+    <!-- Tài khoản -->
+    <div class="input-group">
+      <label>Tên đăng nhập</label>
+      <input type="text" id="username" placeholder="Tên của bạn...">
+    </div>
+
+    <!-- Mật khẩu -->
+    <div class="input-group">
+      <label>Mật khẩu</label>
+      <input type="password" id="password" placeholder="••••••••">
+      <i class="fa-solid fa-eye toggle-password" onclick="toggleView('password', this)"></i>
+    </div>
+
+    <!-- Nhập lại mật khẩu (Mặc định ẩn) -->
+    <div class="input-group" id="re-password-group">
+      <label>Nhập lại mật khẩu</label>
+      <input type="password" id="re-password" placeholder="••••••••">
+      <i class="fa-solid fa-eye toggle-password" onclick="toggleView('re-password', this)"></i>
+    </div>
+
+    <button class="btn-action" onclick="handleSubmit()" id="submitBtn">Đăng Nhập</button>
+
+    <div class="footer-text">
+      <span id="hint-text">Chưa có tài khoản?</span> 
+      <a href="javascript:void(0)" onclick="toggleMode()" id="toggle-link">Đăng ký ngay</a>
+    </div>
   </div>
 </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+<script>
+  let isLogin = true;
 
-  // Cấu hình Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyA_H5GWTB-ZQyu4eWssy0p7Rx9pRax74Z0",
-    authDomain: "baidoxegtvt.firebaseapp.com",
-    projectId: "baidoxegtvt",
-    storageBucket: "baidoxegtvt.firebasestorage.app",
-    messagingSenderId: "992816518326",
-    appId: "1:992816518326:web:cc3484a57e13be15a78217",
-    measurementId: "G-Z2NQYFLM34"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  let isLogin = true; 
-
-  // Chuyển đổi giữa chế độ Đăng nhập và Đăng ký
-  window.toggleMode = function() {
-    isLogin = !isLogin;
-    document.getElementById("form-title").innerText = isLogin ? "Đăng Nhập" : "Đăng Ký";
-    document.getElementById("main-btn").innerText = isLogin ? "Đăng Nhập" : "Đăng Ký";
-    document.getElementById("switch-text").innerText = isLogin ? "Chưa có tài khoản?" : "Đã có tài khoản?";
-    document.getElementById("switch-link").innerText = isLogin ? "Tạo tài khoản mới" : "Đăng nhập tại đây";
-    document.getElementById("confirmPassword").style.display = isLogin ? "none" : "block";
+  // Chức năng hiện/ẩn mật khẩu cho từng ô
+  function toggleView(inputId, icon) {
+    const input = document.getElementById(inputId);
+    const isPassword = input.getAttribute('type') === 'password';
+    input.setAttribute('type', isPassword ? 'text' : 'password');
+    icon.classList.toggle('fa-eye');
+    icon.classList.toggle('fa-eye-slash');
   }
 
-  // Xử lý xác thực
-  window.handleAuth = async function() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
-    
+  // Chuyển đổi chế độ Đăng nhập/Đăng ký
+  function toggleMode() {
+    isLogin = !isLogin;
+    const title = document.getElementById('form-title');
+    const submitBtn = document.getElementById('submitBtn');
+    const hintText = document.getElementById('hint-text');
+    const toggleLink = document.getElementById('toggle-link');
+    const rePassGroup = document.getElementById('re-password-group');
+
+    if (isLogin) {
+      title.innerText = "Đăng Nhập";
+      submitBtn.innerText = "Đăng Nhập";
+      hintText.innerText = "Chưa có tài khoản?";
+      toggleLink.innerText = "Đăng ký ngay";
+      rePassGroup.style.display = "none";
+    } else {
+      title.innerText = "Đăng Ký";
+      submitBtn.innerText = "Tạo Tài Khoản";
+      hintText.innerText = "Đã có tài khoản?";
+      toggleLink.innerText = "Đăng nhập ngay";
+      rePassGroup.style.display = "block";
+    }
+  }
+
+  function handleSubmit() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    const rePass = document.getElementById('re-password').value;
+
     if (!user || !pass) {
       alert("Vui lòng nhập đầy đủ thông tin!");
       return;
     }
 
-    // Tự động tạo email ảo từ username để dùng Firebase Auth
-    const email = user + "@smart.com";
-
-    try {
-      if (isLogin) {
-        // Đăng nhập
-        await signInWithEmailAndPassword(auth, email, pass);
-        alert("Chào mừng " + user + " trở lại!");
-      } else {
-        // Đăng ký
-        const confirmPass = document.getElementById("confirmPassword").value;
-        if (pass !== confirmPass) {
-            alert("Mật khẩu xác nhận không khớp!");
-            return;
-        }
-        await createUserWithEmailAndPassword(auth, email, pass);
-        alert("Tài khoản " + user + " đã được tạo thành công!");
+    if (!isLogin) {
+      // Kiểm tra mật khẩu khớp nhau khi đăng ký
+      if (pass !== rePass) {
+        alert("Mật khẩu nhập lại không khớp!");
+        return;
       }
-      
-      // Chuyển hướng sau khi thành công
-      window.location.href = "ketqua.html"; 
-    } catch (err) {
-      let errorMsg = "Lỗi xác thực!";
-      if (err.code === 'auth/wrong-password') errorMsg = "Sai mật khẩu!";
-      if (err.code === 'auth/user-not-found') errorMsg = "Tài khoản không tồn tại!";
-      if (err.code === 'auth/email-already-in-use') errorMsg = "Tên đăng nhập đã được sử dụng!";
-      
-      alert(errorMsg + "\n(" + err.message + ")");
+      alert("Đăng ký thành công!");
+      toggleMode();
+    } else {
+      // Chuyển hướng sang trang kết quả
+      window.location.href = "ketqua.html";
     }
   }
 </script>
+
 </body>
 </html>
