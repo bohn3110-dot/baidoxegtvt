@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hệ Thống Bãi Đỗ Xe Thông Minh</title>
   <style>
-    /* Cấu hình nền sáng (Light Mode) chuyên nghiệp */
     body { 
       margin: 0; 
       padding: 0; 
@@ -21,21 +20,16 @@
     
     .header { text-align: center; margin-bottom: 30px; }
     .header h1 { 
-    font-size: 36px; 
-    text-transform: uppercase; 
-    background: linear-gradient(to right, #0561da, #1f6feb); 
-  
-    /* Thêm dòng này để hỗ trợ các trình duyệt tiêu chuẩn */
-    background-clip: text; 
-  
-    /* Các dòng cũ của bạn */
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-    margin: 0; 
+      font-size: 36px; 
+      text-transform: uppercase; 
+      background: linear-gradient(to right, #0561da, #1f6feb); 
+      background-clip: text; 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      margin: 0; 
     }
     .header p { color: #65676b; font-weight: 500; margin-top: 10px; }
     
-    /* Dashboard 4 cột */
     .dashboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
     
     .card { 
@@ -58,7 +52,7 @@
       letter-spacing: 1.2px; 
     }
     
-    .card-value { font-size: 38px; font-weight: 800; }
+    .card-value { font-size: 32px; font-weight: 800; }
     
     .green-card { border-top: 5px solid #238636; }
     .red-card { border-top: 5px solid #d0312d; }
@@ -68,7 +62,6 @@
     .status-open { color: #1a7f37; font-size: 22px !important; }
     .status-closed { color: #d12420; font-size: 22px !important; }
 
-    /* Layout khu vực đỗ xe */
     .layout { 
       background: #ffffff; 
       border-radius: 20px; 
@@ -157,19 +150,20 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
+  // Lắng nghe dữ liệu từ node 'parking'
   onValue(ref(db, 'parking'), (snapshot) => {
     const data = snapshot.val();
     if (!data) return;
 
-    // Cập nhật trạng thái thời gian
+    // Cập nhật thời gian thực
     document.getElementById("time-status").innerText = "Cập nhật lúc: " + new Date().toLocaleTimeString();
 
-    // 1. Cập nhật số lượng
+    // 1. Cập nhật số lượng chỗ trống/đầy
     const emptyCount = data.empty || 0;
     document.getElementById("available").innerText = emptyCount;
     document.getElementById("occupied").innerText = 4 - emptyCount;
 
-    // 2. Xử lý Cổng Vào
+    // 2. Cập nhật Cổng Vào (gateInStatus)
     const gateInEl = document.getElementById("gateIn");
     if (data.gateInStatus == 1) {
       gateInEl.innerText = "ĐANG MỞ";
@@ -179,7 +173,7 @@
       gateInEl.className = "card-value status-closed";
     }
 
-    // 3. Xử lý Cổng Ra
+    // 3. Cập nhật Cổng Ra (gateOutStatus)
     const gateOutEl = document.getElementById("gateOut");
     if (data.gateOutStatus == 1) {
       gateOutEl.innerText = "ĐANG MỞ";
@@ -189,10 +183,10 @@
       gateOutEl.className = "card-value status-closed";
     }
 
-    // 4. Cập nhật 4 vị trí đỗ (Hỗ trợ cả Boolean và String từ Firebase)
+    // 4. Cập nhật 4 vị trí đỗ xe
     for (let i = 1; i <= 4; i++) {
       const val = data[`s${i}`];
-      // Kiểm tra nếu là true (Boolean) hoặc "true" (String)
+      // Kiểm tra trạng thái: true/1 là Có xe, false/0 là Trống
       const isOccupied = (val === true || val === "true" || val == 1);
       
       const el = document.getElementById(`s${i}`);
@@ -201,6 +195,9 @@
         el.querySelector('small').innerText = isOccupied ? "Đã có xe" : "Còn trống";
       }
     }
+  }, (error) => {
+    console.error("Lỗi Firebase:", error);
+    document.getElementById("time-status").innerText = "Lỗi kết nối Firebase!";
   });
 </script>
 
