@@ -1,205 +1,140 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đăng Nhập - Hệ Thống Bãi Đỗ Xe Thông Minh</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    body { 
-      margin: 0; 
-      padding: 0; 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      background: #f0f2f5; 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-      min-height: 100vh; 
-    }
-    
-    .container { 
-      width: 95%; 
-      max-width: 400px; 
-      background: #ffffff; 
-      border-radius: 20px; 
-      padding: 40px; 
-      border: 1px solid #dddfe2; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      text-align: center;
-    }
-    
-    .header h1 { 
-      font-size: 30px; 
-      text-transform: uppercase; 
-      background: linear-gradient(to right, #0561da, #1f6feb); 
-      background-clip: text; 
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent; 
-      margin-bottom: 30px;
-    }
-    
-    .input-group {
-      position: relative;
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    /* Ẩn mặc định ô nhập lại */
-    #re-password-group { display: none; }
-
-    .input-group label {
-      display: block;
-      font-size: 12px;
-      color: #65676b;
-      margin-bottom: 8px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 12px 15px;
-      border: 2px solid #e4e6eb;
-      border-radius: 10px;
-      font-size: 16px;
-      box-sizing: border-box;
-      background: #f8f9fa;
-    }
-
-    .input-group input:focus {
-      border-color: #1f6feb;
-      outline: none;
-      background: #ffffff;
-    }
-
-    /* Nút hiện mật khẩu */
-    .toggle-password {
-      position: absolute;
-      right: 15px;
-      top: 38px;
-      cursor: pointer;
-      color: #8b949e;
-      font-size: 18px;
-    }
-
-    .btn-action {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(to right, #0561da, #1f6feb);
-      border: none;
-      color: white;
-      font-size: 16px;
-      font-weight: 700;
-      border-radius: 10px;
-      cursor: pointer;
-      text-transform: uppercase;
-      margin-top: 10px;
-    }
-
-    .footer-text { margin-top: 25px; font-size: 14px; color: #65676b; }
-    .footer-text a { color: #0561da; text-decoration: none; font-weight: 700; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập - Hệ Thống Bãi Đỗ Xe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Giữ nguyên phần CSS của bạn */
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { width: 95%; max-width: 400px; background: #ffffff; border-radius: 20px; padding: 40px; border: 1px solid #dddfe2; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        .header h1 { font-size: 30px; text-transform: uppercase; background: linear-gradient(to right, #0561da, #1f6feb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 30px; }
+        .input-group { position: relative; margin-bottom: 20px; text-align: left; }
+        #re-password-group { display: none; }
+        .input-group label { display: block; font-size: 12px; color: #65676b; margin-bottom: 8px; font-weight: 700; text-transform: uppercase; }
+        .input-group input { width: 100%; padding: 12px 15px; border: 2px solid #e4e6eb; border-radius: 10px; font-size: 16px; box-sizing: border-box; background: #f8f9fa; }
+        .input-group input:focus { border-color: #1f6feb; outline: none; background: #ffffff; }
+        .toggle-password { position: absolute; right: 15px; top: 38px; cursor: pointer; color: #8b949e; font-size: 18px; }
+        .btn-action { width: 100%; padding: 14px; background: linear-gradient(to right, #0561da, #1f6feb); border: none; color: white; font-size: 16px; font-weight: 700; border-radius: 10px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .footer-text { margin-top: 25px; font-size: 14px; color: #65676b; }
+        .footer-text a { color: #0561da; text-decoration: none; font-weight: 700; }
+    </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="header">
-    <h1 id="form-title">Đăng Nhập</h1>
-  </div>
-
-  <div class="auth-form">
-    <div class="input-group">
-      <label>Tên đăng nhập</label>
-      <input type="text" id="username" placeholder="Tên của bạn...">
+    <div class="header">
+        <h1 id="form-title">Đăng Nhập</h1>
     </div>
 
-    <!-- Ô Mật khẩu 1 -->
-    <div class="input-group">
-      <label>Mật khẩu</label>
-      <input type="password" id="password" placeholder="••••••••">
-      <i class="fa-solid fa-eye toggle-password" id="btn-pass1"></i>
-    </div>
+    <div class="auth-form">
+        <div class="input-group">
+            <label>Tên đăng nhập</label>
+            <input type="text" id="username" placeholder="Nhập admin...">
+        </div>
 
-    <!-- Ô Mật khẩu 2 (Chỉ hiện khi Đăng ký) -->
-    <div class="input-group" id="re-password-group">
-      <label>Nhập lại mật khẩu</label>
-      <input type="password" id="re-password" placeholder="••••••••">
-      <i class="fa-solid fa-eye toggle-password" id="btn-pass2"></i>
-    </div>
+        <div class="input-group">
+            <label>Mật khẩu</label>
+            <input type="password" id="password" placeholder="••••••••">
+            <i class="fa-solid fa-eye toggle-password" id="btn-pass1"></i>
+        </div>
 
-    <button class="btn-action" onclick="handleSubmit()" id="submitBtn">Đăng Nhập</button>
+        <div class="input-group" id="re-password-group">
+            <label>Nhập lại mật khẩu</label>
+            <input type="password" id="re-password" placeholder="••••••••">
+            <i class="fa-solid fa-eye toggle-password" id="btn-pass2"></i>
+        </div>
 
-    <div class="footer-text">
-      <span id="hint-text">Chưa có tài khoản?</span> 
-      <a href="javascript:void(0)" onclick="toggleMode()" id="toggle-link">Đăng ký ngay</a>
+        <button class="btn-action" onclick="handleSubmit()" id="submitBtn">Đăng Nhập</button>
+
+        <div class="footer-text">
+            <span id="hint-text">Chưa có tài khoản?</span> 
+            <a href="javascript:void(0)" onclick="toggleMode()" id="toggle-link">Đăng ký ngay</a>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
-  let isLogin = true;
+    let isLogin = true;
 
-  // Hàm xử lý ẩn/hiện mật khẩu chung
-  function setupToggle(btnId, inputId) {
-    const btn = document.getElementById(btnId);
-    const input = document.getElementById(inputId);
-    
-    btn.addEventListener('click', () => {
-      const isPass = input.type === 'password';
-      input.type = isPass ? 'text' : 'password';
-      btn.classList.toggle('fa-eye');
-      btn.classList.toggle('fa-eye-slash');
-    });
-  }
+    // 1. "Cơ sở dữ liệu" ảo (Dùng để demo đồ án)
+    // Sau này bạn có thể lưu thêm tài khoản vào đây
+    const validUsers = [
+        { user: "admin", pass: "123456" },
+        { user: "sinhvien", pass: "gtvt2026" }
+    ];
 
-  // Kích hoạt cho cả 2 nút mắt
-  setupToggle('btn-pass1', 'password');
-  setupToggle('btn-pass2', 're-password');
-
-  function toggleMode() {
-    isLogin = !isLogin;
-    const title = document.getElementById('form-title');
-    const submitBtn = document.getElementById('submitBtn');
-    const hintText = document.getElementById('hint-text');
-    const toggleLink = document.getElementById('toggle-link');
-    const rePassGroup = document.getElementById('re-password-group');
-
-    if (isLogin) {
-      title.innerText = "Đăng Nhập";
-      submitBtn.innerText = "Đăng Nhập";
-      hintText.innerText = "Chưa có tài khoản?";
-      toggleLink.innerText = "Đăng ký ngay";
-      rePassGroup.style.display = "none";
-    } else {
-      title.innerText = "Đăng Ký";
-      submitBtn.innerText = "Tạo Tài Khoản";
-      hintText.innerText = "Đã có tài khoản?";
-      toggleLink.innerText = "Đăng nhập ngay";
-      rePassGroup.style.display = "block";
-    }
-  }
-
-  function handleSubmit() {
-    const user = document.getElementById('username').value;
-    const pass = document.getElementById('password').value;
-    const rePass = document.getElementById('re-password').value;
-
-    if (!user || !pass) {
-      alert("Vui lòng nhập đầy đủ thông tin!");
-      return;
+    function setupToggle(btnId, inputId) {
+        const btn = document.getElementById(btnId);
+        const input = document.getElementById(inputId);
+        btn.addEventListener('click', () => {
+            const isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            btn.classList.toggle('fa-eye');
+            btn.classList.toggle('fa-eye-slash');
+        });
     }
 
-    if (!isLogin) {
-      if (pass !== rePass) {
-        alert("Mật khẩu nhập lại không khớp!");
-        return;
-      }
-      alert("Đăng ký thành công!");
-      toggleMode();
-    } else {
-      window.location.href = "ketqua.html";
+    setupToggle('btn-pass1', 'password');
+    setupToggle('btn-pass2', 're-password');
+
+    function toggleMode() {
+        isLogin = !isLogin;
+        const title = document.getElementById('form-title');
+        const submitBtn = document.getElementById('submitBtn');
+        const hintText = document.getElementById('hint-text');
+        const toggleLink = document.getElementById('toggle-link');
+        const rePassGroup = document.getElementById('re-password-group');
+
+        if (isLogin) {
+            title.innerText = "Đăng Nhập";
+            submitBtn.innerText = "Đăng Nhập";
+            hintText.innerText = "Chưa có tài khoản?";
+            toggleLink.innerText = "Đăng ký ngay";
+            rePassGroup.style.display = "none";
+        } else {
+            title.innerText = "Đăng Ký";
+            submitBtn.innerText = "Tạo Tài Khoản";
+            hintText.innerText = "Đã có tài khoản?";
+            toggleLink.innerText = "Đăng nhập ngay";
+            rePassGroup.style.display = "block";
+        }
     }
-  }
+
+    function handleSubmit() {
+        const userInp = document.getElementById('username').value.trim();
+        const passInp = document.getElementById('password').value;
+        const rePassInp = document.getElementById('re-password').value;
+
+        if (!userInp || !passInp) {
+            alert("Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+
+        if (!isLogin) {
+            // Logic Đăng ký (Tạm thời chỉ alert thành công)
+            if (passInp !== rePassInp) {
+                alert("Mật khẩu nhập lại không khớp!");
+                return;
+            }
+            // Thêm user mới vào mảng (Lưu ý: sẽ mất khi F5 trang)
+            validUsers.push({ user: userInp, pass: passInp });
+            alert("Đăng ký thành công! Hãy đăng nhập với tài khoản mới.");
+            toggleMode();
+        } else {
+            // --- LOGIC KIỂM TRA ĐĂNG NHẬP THẬT ---
+            const foundUser = validUsers.find(u => u.user === userInp && u.pass === passInp);
+
+            if (foundUser) {
+                alert("Đăng nhập thành công!");
+                // Chuyển hướng đến file hiển thị kết quả
+                window.location.href = "ketqua.html";
+            } else {
+                alert("Sai tên đăng nhập hoặc mật khẩu! (Thử: admin/123456)");
+            }
+        }
+    }
 </script>
 
 </body>
